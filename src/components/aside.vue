@@ -39,6 +39,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 <style lang = "less" scoped>
 .aside-contianer{
     height: 100%;//100%的高度是针对他的父级元素的高度
+    width: 230px;
     .logo{
         font-size: 20px;
         font-weight: 900;

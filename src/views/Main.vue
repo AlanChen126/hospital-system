@@ -5,7 +5,9 @@
        <Aside></Aside>
       <el-container>
         <el-header>Header</el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -13,6 +15,7 @@
 
 <script setup>
 import Aside from '../components/aside.vue';//不能起名叫aside，因为和element-plus的aside冲突
+import { RouterView } from 'vue-router';//RouterView是vue-router提供的组件，用来显示当前路由匹配到的组件，会将该组件放置到对应的位置上
 </script>
 
 <style lang="less" scoped>

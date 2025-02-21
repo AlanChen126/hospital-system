@@ -4,6 +4,7 @@
      <template v-for="(item , index) in props.menuData">
         <!-- 没有子元素的情况 -->
         <el-menu-item 
+        @click="handleClick(item, `${props.index}-${item.meta.id}`)"
         v-if="!item.children || item.children.length == 0"
         :index = "`${props.index}-${item.meta.id}`"
         :key = "`${props.index}-${item.meta.id}`"
@@ -36,6 +37,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 const props = defineProps(["menuData","index"])
-console.log(props, 'props')
+const router = useRouter();
+
+// console.log(props, 'props')
+// 点击菜单的回调函数(点击后跳转到对应的路由上)
+const handleClick = (item, index) => {
+    router.push(item.meta.path)
+}
 </script>
