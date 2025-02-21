@@ -6,20 +6,28 @@
         @close="handleClose"
       >
       <p class="logo">陪诊</p>
-      <!-- 封装组件 -->
-        <treeMenu></treeMenu>
+      <!-- 封装组件，用v-bind在父子组件间传递数据 -->
+        <treeMenu :index = "1" :menuData = "menuData"></treeMenu>
       </el-menu>
 
 </template>
 
 <script lang="ts" setup>
 import treeMenu from './treeMenu.vue';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import {
   Document,
   Menu as IconMenu,
   Location,
   Setting,
 } from '@element-plus/icons-vue'
+
+const router = useRouter();
+const menuData = reactive(router.options.routes[0].children);
+
+
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
