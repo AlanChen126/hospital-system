@@ -38,12 +38,15 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import {useStore} from 'vuex'
 const props = defineProps(["menuData","index"])
 const router = useRouter();
-
+const store = useStore()
 // console.log(props, 'props')
 // 点击菜单的回调函数(点击后跳转到对应的路由上)
 const handleClick = (item, index) => {
+    // console.log(item, 'item')
+    store.commit('addMenu', item.meta)
     router.push(item.meta.path)
 }
 </script>

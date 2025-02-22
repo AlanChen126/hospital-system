@@ -1,5 +1,7 @@
 <template>
-  <el-menu :style="{ width: isCollapse ? '60px' : '230px' }" default-active="2" class="aside-contianer"
+  <el-menu 
+  :style="{ width: isCollapse ? '60px' : '230px' }"
+   default-active="2" class="aside-contianer"
     @open="handleOpen" @close="handleClose" :collapse="isCollapse">
     <p class="logo">{{ isCollapse ? '陪诊' : '陪诊系统' }}</p>
     <!-- 封装组件，用v-bind在父子组件间传递数据 -->
@@ -28,10 +30,10 @@ const store = useStore();
 const isCollapse = computed(() => store.state.menu.isCollapse);
 
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 </script>
 

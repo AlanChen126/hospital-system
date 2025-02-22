@@ -6,6 +6,13 @@ const state = {
 const mutations = {
     collapseMenu(state) {
         state.isCollapse = !state.isCollapse
+    },
+    addMenu(state,payload) {
+        if(state.SelectMenu.findIndex(item => item.path === payload.path) === -1) {
+            state.SelectMenu.push(payload)
+        }
+        
+        
     }
 }
 

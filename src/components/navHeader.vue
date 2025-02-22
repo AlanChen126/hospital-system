@@ -2,8 +2,24 @@
     <div class="header-container">
         <div class="header-left flex-box">
             <el-icon class="icon" size="20px" @click="store.commit('collapseMenu')">
-                <Fold />
+                <component :is="isCollapse ? Expand : Fold"></component>
             </el-icon>
+            <ul class="flex-box">
+                <li v-for="(item,index) in SelectMenu" 
+                    :key="item.path"
+                    :class="{selected : item.path === route.path}"
+                    @click="navigateTo(item.path)"
+                    class="flex-box tab"
+                    >
+                    <el-icon class="icon1" size="12px">
+                        <component :is="item.icon"></component>
+                    </el-icon>
+                    <span class="text">{{item.name}}</span>
+                    <el-icon class="icon1 close" size="12px">
+                        <Close />
+                    </el-icon>
+                </li>
+            </ul>
         </div>
         <div class="header-right">
             <el-dropdown>
@@ -23,15 +39,27 @@
 
 <script setup>
 import { useStore } from 'vuex'
+import { computed } from 'vue'
+import { useRouter,useRoute } from 'vue-router'
+import { Expand, Fold } from '@element-plus/icons-vue'
 // 先拿到store的实例，然后调用在store中定义的方法
 const store = useStore()
+const route = useRoute()
+const router = useRouter()
+const isCollapse = computed(() => store.state.menu.isCollapse);
+const SelectMenu = computed(() => store.state.menu.SelectMenu)
 
+const navigateTo = (path) => {
+    router.push(path)
+}
 </script>
 
 <style lang="less" scoped>
 .flex-box {
+    // 让其在一行展示
     display: flex;
     align-items: center;
+    height: 100%;
 }
 
 .header-container {
@@ -54,6 +82,38 @@ const store = useStore()
             background-color: #f5f5f5;
             cursor: pointer;
         }
+        .tab{
+            height: 100%;
+            padding: 0 10px;
+            .text {
+                margin:0 5px;
+            }
+            .icon1 {
+                // width: 25px;
+                padding: 0 5px;
+                height: 100%;
+            }
+            .close {
+                visibility: hidden;
+            }
+            &.selected {
+                span{
+                    color: #409EFF;
+                }
+                i{
+                    color: #409EFF;
+                }
+                background-color: #f5f5f5;
+            }
+            &:hover {
+                background-color: #f5f5f5;
+                .close {
+                    visibility: visible;
+                    cursor: pointer;
+                    color: #333;
+                }
+            }
+        }
     }
 
     .header-right {
@@ -63,4 +123,10 @@ const store = useStore()
         }
     }
 }
+a{
+    height: 100%;
+    color: #333;
+    font-size: 15px;
+}
+
 </style>
