@@ -1,7 +1,7 @@
 <template>
     <div class="header-container">
         <div class="header-left flex-box">
-            <el-icon class="icon" size="20px">
+            <el-icon class="icon" size="20px" @click="store.commit('collapseMenu')">
                 <Fold />
             </el-icon>
         </div>
@@ -22,6 +22,9 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex'
+// 先拿到store的实例，然后调用在store中定义的方法
+const store = useStore()
 
 </script>
 

@@ -1,21 +1,18 @@
 <template>
-      <el-menu
-        default-active="2"
-        class="aside-contianer"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-      <p class="logo">陪诊</p>
-      <!-- 封装组件，用v-bind在父子组件间传递数据 -->
-        <treeMenu :index = "1" :menuData = "menuData"></treeMenu>
-      </el-menu>
+  <el-menu :style="{ width: isCollapse ? '60px' : '230px' }" default-active="2" class="aside-contianer"
+    @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+    <p class="logo">{{ isCollapse ? '陪诊' : '陪诊系统' }}</p>
+    <!-- 封装组件，用v-bind在父子组件间传递数据 -->
+    <treeMenu :index="1" :menuData="menuData"></treeMenu>
+  </el-menu>
 
 </template>
 
 <script lang="ts" setup>
 import treeMenu from './treeMenu.vue';
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex'
 
 import {
   Document,
@@ -26,7 +23,9 @@ import {
 
 const router = useRouter();
 const menuData = reactive(router.options.routes[0].children);
-
+//获取store实例的isCollapse值，用来控制菜单的展开和收缩
+const store = useStore();
+const isCollapse = computed(() => store.state.menu.isCollapse);
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
@@ -36,16 +35,18 @@ const handleClose = (key: string, keyPath: string[]) => {
 }
 </script>
 
-<style lang = "less" scoped>
-.aside-contianer{
-    height: 100%;//100%的高度是针对他的父级元素的高度
-    width: 230px;
-    .logo{
-        font-size: 20px;
-        font-weight: 900;
-        color: #000000;
-        text-align: center;
-        padding: 10px 0;
-    }
+<style lang="less" scoped>
+.aside-contianer {
+  height: 100%; //100%的高度是针对他的父级元素的高度
+  transition: width 0.2s ease-in-out; // 添加过渡动画，宽度变化时持续0.3秒，使用缓动效果
+
+  .logo {
+    font-size: 20px;
+    font-weight: 900;
+    color: #000000;
+    text-align: center;
+    padding: 10px 0;
+    transition: opacity 0.2s ease-in-out;
+  }
 }
 </style>
