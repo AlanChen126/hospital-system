@@ -13,6 +13,10 @@ const mutations = {
         }
         
         
+    },
+    closeTab(state,payload){
+        const index = state.SelectMenu.findIndex(item => item.path === payload.path)
+        state.SelectMenu.splice(index,1)
     }
 }
 

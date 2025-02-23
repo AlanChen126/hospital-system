@@ -15,7 +15,7 @@
                         <component :is="item.icon"></component>
                     </el-icon>
                     <span class="text">{{item.name}}</span>
-                    <el-icon class="icon1 close" size="12px">
+                    <el-icon class="icon1 close" size="12px" @click="closeTab(item,index)">
                         <Close />
                     </el-icon>
                 </li>
@@ -51,6 +51,28 @@ const SelectMenu = computed(() => store.state.menu.SelectMenu)
 
 const navigateTo = (path) => {
     router.push(path)
+}
+
+// 点击关闭tab
+const closeTab = (item,index) => {
+    event.stopPropagation();// 阻止事件冒泡
+    store.commit('closeTab',item)
+    if(route.path !== item.path){
+        return
+    }
+    const SelectData = SelectMenu.value
+        
+    if(!SelectData.length){
+        router.push('/')
+    }else{
+        // 如果关闭的是最后一个tab，则跳转到前一个tab
+        if(index === SelectData.length){
+            router.push(SelectData[index - 1].path)
+        }else{
+            router.push(SelectData[index].path)
+        }
+    }
+
 }
 </script>
 
