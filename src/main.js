@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import 'element-plus/dist/index.css'
 
 //使用ElementPlus的图标
 // 如果您正在使用CDN引入，请删除下面一行。

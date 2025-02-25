@@ -37,6 +37,8 @@
 <script setup>
     import { Lock, UserFilled } from '@element-plus/icons-vue';
     import {ref,reactive} from 'vue'
+    import { getCode } from '../../api';
+    import { ElMessage } from 'element-plus';
     const imgUrl = new URL('../../../public/login-head.png', import.meta.url).href
     const loginForm = reactive({
         userName: '',
@@ -57,6 +59,8 @@
     }
     let flag = true //定时器未被使用，可以点击使用
     const phoneReg = /^1[3-9]\d{9}$/
+
+    // 获取验证码
     const countDownChange = () =>{
         if(!flag){//false，不能新建使用
             return
@@ -80,6 +84,13 @@
                     flag = true
                 }
             }, 1000);
+            getCode({tel:loginForm.userName}).then(res =>{
+                console.log(res,'res')
+                if(res.data.code === 10000){
+                    console.log('验证码发送成功')
+                    ElMessage.success('验证码发送成功')
+                }
+            })
         }
         
     }
