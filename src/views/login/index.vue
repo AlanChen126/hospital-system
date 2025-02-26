@@ -9,7 +9,9 @@
                 <div class="jump-link">
                     <el-link   type="primary" @click="handelChange">{{fromType ? '返回登录' : '注册账号'}}</el-link>
                 </div>
-                <el-form :model="loginForm" label-width="60px" :rules="rules">
+                <!-- ref：用于获取 DOM 元素或组件实例的引用，允许你直接操作它们。适用于需要直接调用组件方法或访问 DOM 元素的场景。
+                    :model：用于双向数据绑定，将数据模型绑定到表单元素或组件的值。适用于需要自动更新数据模型的场景。 -->
+                <el-form :model="loginForm" label-width="60px" :rules="rules" ref="loginFormRef" >
                     <el-form-item label="手机号:" prop="userName">
                         <el-input v-model="loginForm.userName" placeholder="请输入手机号" :prefix-icon = 'UserFilled'/>
                     </el-form-item>
@@ -25,7 +27,7 @@
                     </el-form-item>
                 </el-form>
                 <el-form-item>
-                        <el-button type="primary" style="width:100%" @click="submitForm">
+                        <el-button type="primary" style="width:100%" @click="submitForm(loginFormRef)">
                             {{fromType ? '注册' : '登录'}}
                         </el-button>
                     </el-form-item>
@@ -37,9 +39,15 @@
 <script setup>
     import { Lock, UserFilled } from '@element-plus/icons-vue';
     import {ref,reactive} from 'vue'
-    import { getCode } from '../../api';
+    import { getCode,userAuthentication,userLogin } from '../../api';
     import { ElMessage } from 'element-plus';
+    import { useRouter} from 'vue-router'
     const imgUrl = new URL('../../../public/login-head.png', import.meta.url).href
+    // 路由实例
+    const router = useRouter()
+    // 表单实例
+    const loginFormRef = ref()
+
     const loginForm = reactive({
         userName: '',
         passWord: '',
@@ -134,11 +142,49 @@
     })
 
     // 提交表单
-    const submitForm = () =>{
-        ElMessage({
-            message: '登录成功',
-            type: 'success',
+    // formEl: 表单实例，获取表单实例的方法是通过 ref 获取，在此进行校验
+    const submitForm = async (formEl) =>{
+        if (!formEl) return
+        // 手动触发校验
+        await formEl.validate((valid, fields) => {
+            if (valid) {
+            console.log(loginForm,'submit!')
+            // 注册页面逻辑
+            if(fromType.value){
+                userAuthentication(loginForm).then(res =>{
+                    if(res.data.code === 10000){
+                        ElMessage({
+                            message: '注册成功，请登录',
+                            type: 'success',
+                        })
+                        // 跳转到登录页面
+                        fromType.value = 0
+                    }
+                })
+            }else{
+                // 登录页面逻辑
+                userLogin(loginForm).then(res =>{
+                    if(res.data.code === 10000){
+                        ElMessage({
+                            message: '登录成功',
+                            type: 'success',
+                        })
+                        // 将用户信息和token缓存到浏览器
+                        localStorage.setItem('pz_token',res.data.data.token)
+                        // 将用户信息缓存到浏览器(因为用户信息是对象，需要转换成字符串进行保存)
+                        localStorage.setItem('pz_userInfo',JSON.stringify(res.data.data.userInfo))
+                        router.push('/')
+                    }
+                })
+            }
+
+            } else {
+            console.log('error submit!', fields)
+            }
         })
+
+
+        
     }
 </script>
 
