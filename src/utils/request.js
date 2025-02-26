@@ -30,6 +30,14 @@ http.interceptors.response.use(function (response) {
     if (response.data.code === -1) {
       ElMessage.warning(response.data.message)
     }
+    // token有问题
+    if(response.data.code === -2){
+      // 清除token
+      localStorage.removeItem('pz_token')
+      localStorage.removeItem('pz_userInfo')
+      // 跳转到登录页
+      window.location.href = window.location.origin
+    }
     return response;
   }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。

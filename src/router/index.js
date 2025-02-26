@@ -70,4 +70,20 @@ const router = createRouter({
     history: createWebHashHistory()
 })
 
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('pz_token')
+    // 非登录页面token不存在
+    if(!token && to.path !== '/login') {
+        next('/login')
+        // console.log('未登录')
+    }else if(token && to.path === '/login') {//有token（已经登录），但是想去登录页
+        next('/')
+        // console.log('已登录')
+    }else {
+        next()
+        // console.log('正常')
+    }
+
+})
+
 export default router
