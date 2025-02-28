@@ -34,3 +34,13 @@ export const userSetmenu = (data) =>{
 export const menuList = (params) =>{
   return request.get('/menu/list',{ params })
 }
+
+// 菜单权限下拉
+export const menuSelectlist = () =>{
+  return request.get('/menu/selectlist')
+}
+
+// 用户信息修改
+export const updateUser = (data) =>{
+  return request.post('/update/user',data)
+}

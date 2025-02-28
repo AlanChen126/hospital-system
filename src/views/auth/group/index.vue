@@ -156,7 +156,7 @@ const rules = reactive({
 // 表单提交
 const submitForm = async (formEl) =>{
     if(!formEl) return
-    await formEl.validate(async (valid, fields) => {
+    await formEl.validate((valid, fields) => {
         if (valid) {
             const checkedKeys = JSON.stringify(treeRef.value.getCheckedKeys())
 
