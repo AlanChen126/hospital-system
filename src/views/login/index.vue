@@ -38,15 +38,21 @@
 
 <script setup>
     import { Lock, UserFilled } from '@element-plus/icons-vue';
-    import {ref,reactive} from 'vue'
-    import { getCode,userAuthentication,userLogin } from '../../api';
+    import {ref,reactive,computed,toRaw} from 'vue'
+    import { getCode,userAuthentication,userLogin,menuPermissions } from '../../api';
     import { ElMessage } from 'element-plus';
     import { useRouter} from 'vue-router'
+    import { useStore } from 'vuex';
     const imgUrl = new URL('../../../public/login-head.png', import.meta.url).href
     // 路由实例
     const router = useRouter()
+    // vuex
+    const store = useStore()
     // 表单实例
     const loginFormRef = ref()
+
+    // 访问 state 的顺序是 state.模块名.属性名,用computed存储可以实现响应式
+    const routerList = computed(()=> store.state.menu.routerList)
 
     const loginForm = reactive({
         userName: '',
@@ -173,6 +179,18 @@
                         localStorage.setItem('pz_token',res.data.data.token)
                         // 将用户信息缓存到浏览器(因为用户信息是对象，需要转换成字符串进行保存)
                         localStorage.setItem('pz_userInfo',JSON.stringify(res.data.data.userInfo))
+                        // 拿到当前账号对应的菜单权限
+                        menuPermissions().then(({data})=>{
+                            store.commit('dynamicsMenu',data.data)
+                            // console.log(data,"res.data")
+                            // console.log(routerList,"routerList")
+                            // console.log(toRaw(routerList.value),"raw")
+                            // 将响应式的路由数据(ref)转化为普通的路由数据
+                            toRaw(routerList.value).forEach(item => {
+                                // 动态传入路由数据
+                                router.addRoute('main',item)
+                            });
+                        })
                         router.push('/')
                     }
                 })

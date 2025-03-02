@@ -35,6 +35,7 @@ http.interceptors.response.use(function (response) {
       // 清除token
       localStorage.removeItem('pz_token')
       localStorage.removeItem('pz_userInfo')
+      localStorage.removeItem('pz')
       // 跳转到登录页
       window.location.href = window.location.origin
     }

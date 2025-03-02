@@ -24,10 +24,15 @@ import {
 } from '@element-plus/icons-vue'
 
 const router = useRouter();
-const menuData = reactive(router.options.routes[0].children);
+
+
 //获取store实例的isCollapse值，用来控制菜单的展开和收缩
 const store = useStore();
 const isCollapse = computed(() => store.state.menu.isCollapse);
+
+// const menuData = reactive(router.options.routes[0].children);
+const menuData = computed(()=>store.state.menu.routerList)
+
 
 const handleOpen = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath)

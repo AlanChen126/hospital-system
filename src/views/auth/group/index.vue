@@ -1,6 +1,6 @@
 <template>
     <div>
-        <panelHeader />
+        <panelHeader :route="route" />
         <div class="btns">
             <el-button type="primary" @click="open(null)" :icon="Plus">新增</el-button>
         </div>
@@ -55,6 +55,8 @@ import { ref,reactive,onMounted, nextTick} from 'vue';
 import { Plus } from '@element-plus/icons-vue';
 import {userGetmenu,userSetmenu,menuList} from '../../../api'
 import panelHeader from '../../../components/panelHeader.vue';
+import { useRoute } from 'vue-router';
+const route = useRoute()
 // 弹窗显示和隐藏
 const dialogFormVisible = ref(false);
 // 树形菜单数据

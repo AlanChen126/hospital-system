@@ -1,11 +1,17 @@
 <template>
     <div class="panel-header">
-        <div class="title">sadasdas</div>
-        <p class="description">weqw21</p>
+        <div class="title">{{props.route.meta.name}}</div>
+        <p class="description">{{props.route.meta.describe}}</p>
     </div>
 </template>
 
 <script setup>
+// 用defineProps接收传给组件的参数
+    const props = defineProps({
+        route:{
+            type:Object
+        }
+    })
 </script>
 
 <style lang="less" scoped>

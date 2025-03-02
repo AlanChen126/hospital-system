@@ -22,14 +22,14 @@
             </ul>
         </div>
         <div class="header-right">
-            <el-dropdown>
+            <el-dropdown @command="handleCommand">
                 <div class="el-dropdown-link flex-box">
                     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
                     <p class="username"> admin</p>
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item command="cancel">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -73,6 +73,17 @@ const closeTab = (item,index) => {
         }
     }
 
+}
+
+// 点击下拉选项
+const  handleCommand = (command)=>{
+    // 如果点击了退出按钮
+    if(command==="cancel"){
+        localStorage.removeItem('pz_token')
+        localStorage.removeItem('pz_userInfo')
+        localStorage.removeItem('pz')
+        window.location.href = window.location.origin
+    }
 }
 </script>
 
