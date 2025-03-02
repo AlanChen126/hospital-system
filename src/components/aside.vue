@@ -1,7 +1,7 @@
 <template>
   <el-menu 
   :style="{ width: isCollapse ? '60px' : '230px' }"
-   default-active="2" class="aside-contianer"
+  :default-active="active" class="aside-contianer"
     @open="handleOpen" @close="handleClose" :collapse="isCollapse">
     <p class="logo">{{ isCollapse ? '陪诊' : '陪诊系统' }}</p>
     <!-- 封装组件，用v-bind在父子组件间传递数据 -->
@@ -29,6 +29,8 @@ const router = useRouter();
 //获取store实例的isCollapse值，用来控制菜单的展开和收缩
 const store = useStore();
 const isCollapse = computed(() => store.state.menu.isCollapse);
+
+const active = computed(()=>store.state.menu.menuActive)
 
 // const menuData = reactive(router.options.routes[0].children);
 const menuData = computed(()=>store.state.menu.routerList)

@@ -24,8 +24,8 @@
         <div class="header-right">
             <el-dropdown @command="handleCommand">
                 <div class="el-dropdown-link flex-box">
-                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-                    <p class="username"> admin</p>
+                    <el-avatar :src=avatar />
+                    <p class="username"> {{name}}</p>
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -48,6 +48,8 @@ const route = useRoute()
 const router = useRouter()
 const isCollapse = computed(() => store.state.menu.isCollapse);
 const SelectMenu = computed(() => store.state.menu.SelectMenu)
+
+const {avatar,name} = JSON.parse(localStorage.getItem('pz_userInfo'))
 
 const navigateTo = (path) => {
     router.push(path)

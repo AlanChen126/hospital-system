@@ -3,7 +3,8 @@ const localData = localStorage.getItem('pz')
 const state = localData ? localData.menu : {
     isCollapse: false,
     SelectMenu: [],
-    routerList:[]
+    routerList:[],
+    menuActive:'1-1'
 }
 
 const mutations = {
@@ -44,6 +45,9 @@ const mutations = {
         // 拿到完整的路由数据
         state.routerList = payload
         // console.log(state.routerList,'state.routerList')
+    },
+    updateMenuUpdate(state,payload){
+        state.menuActive = payload
     }
 }
 

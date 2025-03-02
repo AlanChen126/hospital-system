@@ -10,6 +10,27 @@ import Order from '../views/vppz/order/index.vue'
 import store from '../store'
 // import { useStore } from 'vuex'
 
+const routeData = JSON.parse(localStorage.getItem('pz'))
+
+const findFirstRoute = (routeLocal) =>{
+    if(routeLocal){
+        // 如果有子菜单的情况
+        const child = routeLocal.menu.routerList[0].children
+        if(child){
+            // 递归
+            return findFirstRoute(child[0])
+        }else{
+            // 没有子菜单
+            if(routeLocal.menu.routerList[0].meta.path == '/dashboard'){
+                store.commit('updateMenuUpdate', '1-1')
+            }
+            return routeLocal.menu.routerList[0].meta.path
+        }
+    }else{
+        return '/'
+    }
+    
+}
 
 
 const routes = [
@@ -17,6 +38,9 @@ const routes = [
         path: '/',
         component: Layout,
         name: 'main',
+        redirect: to =>{
+            return findFirstRoute(routeData)
+        },
         children: [
             // {
             //     path: 'dashboard',
